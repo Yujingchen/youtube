@@ -1,0 +1,26 @@
+@import "../../styles/shared.scss";
+.ui.menu.top-menu {
+  // specific rule to overrun semantic default css
+  border: none;
+  //remove default border
+  .logo {
+    width: $side-left-width;
+  }
+  .nav-container {
+    justify-content: space-between;
+    flex-grow: 1;
+    //expand the nav-container component and span the entire available width that is not already covered by the logo element.
+    padding: 0;
+    .search-input {
+      padding-left: 0;
+      width: 33%;
+      form {
+        width: 100%;
+      }
+    }
+
+    .header-icon {
+      color: #a0a0a0;
+    }
+  }
+}
