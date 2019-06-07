@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { VideoGrid } from "../../VideoGrid/VideoGrid";
+import { VideoGrid } from "../../components/VideoGrid/VideoGrid";
 import SideBar from "../../containers/SideBar/SideBar";
 import "./Home.scss";
 export default class Home extends Component {
