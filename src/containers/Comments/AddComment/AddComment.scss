@@ -1,0 +1,18 @@
+@import "../../..//styles/shared.scss";
+
+.add-comment {
+  display: flex;
+  margin-top: 16px;
+  margin-bottom: 16px;
+
+  form {
+    flex: 1;
+    //flex is set to 1 which will span the element to take all the avaiable width
+  }
+
+  .user-image {
+    width: $avatar-diameter;
+    height: $avatar-diameter;
+    margin-right: $avatar-margin;
+  }
+}

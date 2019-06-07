@@ -1,6 +1,8 @@
+@import "../../styles/shared.scss";
+
 .video-info-box {
   display: grid;
-  grid: auto auto/58px auto max-content;
+  grid: auto auto/calc(#{$avatar-diameter} + #{$avatar-margin}) auto max-content;
   //element in first thrid column with max-content will never wrap
   align-items: center;
   grid-row-gap: 16px;
