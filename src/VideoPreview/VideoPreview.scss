@@ -4,6 +4,14 @@
   grid: 118px auto/210px;
   //height of first element is set to 118px, of second element is set to auto
   //width of colomn is set to 210px
+  &.horizontal {
+    grid: auto/210px auto;
+    grid-column-gap: 4px;
+    .video-info {
+      grid-row: 1/2;
+      grid-column: 2/3;
+    }
+  }
 }
 
 .image-container {
