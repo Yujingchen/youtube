@@ -20,6 +20,9 @@
       & > *:not(:last-child) {
         margin-right: 8px;
       }
+      i.icon {
+        color: #000;
+      }
     }
   }
 }

@@ -12,12 +12,13 @@ exports[`VideoMetadata renders with view count 1`] = `
   >
     <span>
       100,234
+       views
     </span>
     <div
       className="video-actions"
     >
       <Rating
-        dislikeCount={200}
+        dislikeCount={100}
         likeCount={1000}
       />
       <Button
@@ -70,12 +71,13 @@ exports[`VideoMetadata renders without props 1`] = `
   >
     <span>
       NaN
+       views
     </span>
     <div
       className="video-actions"
     >
       <Rating
-        dislikeCount={200}
+        dislikeCount={100}
         likeCount={1000}
       />
       <Button

@@ -9,9 +9,9 @@ export default function VideoMetadata(props) {
     <div className="video-metadata">
       <h3>Video title</h3>
       <div className="video-stats">
-        <span>{viewCount}</span>
+        <span>{viewCount} views</span>
         <div className="video-actions">
-          <Rating likeCount={1000} dislikeCount={200} />
+          <Rating likeCount={1000} dislikeCount={100} />
           <Button basic icon labelPosition="left">
             <Icon name="share" />
             Share
