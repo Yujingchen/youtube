@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import AppLayout from "./components/AppLayout/AppLayout";
 import Home from "./containers/Home/Home";
+import AppLayout from "./components/AppLayout/AppLayout";
+import { Route, Switch } from "react-router-dom";
 import Watch from "./containers/Watch/Watch";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Route, Switch } from "react-router-dom";
 import { youtubeLibraryLoaded } from "./store/actions/api";
-import "./App.scss";
+
 const API_KEY = "AIzaSyDGa1Jr04g_jf5WuPHcWW4jYWS-pQ2RjF0";
 
 class App extends Component {

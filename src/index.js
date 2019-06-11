@@ -7,7 +7,8 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { configureStore } from "./store/configureStore";
 
-const store = configureStore;
+const store = configureStore();
+
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
@@ -16,5 +17,4 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
-
 serviceWorker.unregister();

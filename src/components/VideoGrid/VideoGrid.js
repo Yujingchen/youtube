@@ -2,8 +2,8 @@ import React from "react";
 import VideoPreview from "../VideoPreview/VideoPreview";
 import "./VideoGrid.scss";
 import { Divider } from "semantic-ui-react";
-import { VideoGridHeader } from "./VideoGridHeader/VideoGridHeader";
-export function VideoGrid(props) {
+import VideoGridHeader from "./VideoGridHeader/VideoGridHeader";
+export default function VideoGrid(props) {
   const divider = props.hideDivider ? null : <Divider />;
   return (
     <React.Fragment>
