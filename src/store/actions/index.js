@@ -5,7 +5,6 @@ export function createAction(type, payload = {}) {
   };
 }
 
-
 export const REQUEST = "REQUEST";
 export const SUCCESS = "SUCCESS";
 export const FAILURE = "FAILURE";
@@ -19,3 +18,10 @@ export function createRequestTypes(base) {
     return acc;
   }, {});
 }
+
+//RETURN A OBJECT WITH THREE FIELDS
+// {
+//   REQUEST: 'MOST_POPULAR_REQUEST',
+//   SUCCESS: 'MOST_POPULAR_SUCCESS',
+//   FAILURE: 'MOST_POPULAR_FAILURE'
+// }

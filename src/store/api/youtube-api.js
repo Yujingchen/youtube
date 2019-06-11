@@ -1,7 +1,7 @@
 /*
   Util - Youtube API boilerplate code
  */
-//handling request API, and reposiable for sending request to youtube api end point
+//handling request API, and reposiable to send request to youtube api end point
 
 export function buildApiRequest(requestMethod, path, params, properties) {
   params = removeEmptyParams(params);
