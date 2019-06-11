@@ -5,13 +5,16 @@ import { bindActionCreators } from "redux";
 import { getYoutubeLibraryLoaded } from "../../store/reducers/api";
 import SideBar from "../../containers/SideBar/SideBar";
 import HomeContent from "./HomeContent/HomeContent";
+import "./Home.scss";
 
 class Home extends Component {
   render() {
     return (
       <React.Fragment>
         <SideBar />
-        <HomeContent />
+        <div className="home">
+          <HomeContent />
+        </div>
       </React.Fragment>
     );
   }

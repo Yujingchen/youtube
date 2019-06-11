@@ -1,15 +1,35 @@
-import React, { Component } from "react";
 import VideoGrid from "../../../components/VideoGrid/VideoGrid";
+import React from "react";
 import "./HomeContent.scss";
-export default class HomeContent extends Component {
+import { getMostPopularVideos } from "../../../store/reducers/video";
+import { connect } from "react-redux";
+
+const AMOUNT_TRENDING_VIDEOS = 12;
+
+class HomeContent extends React.Component {
   render() {
+    const trendingVideos = this.getTrendingVideos();
     return (
-      <div className="home">
+      <div className="home-content">
         <div className="responsive-video-grid-container">
-          <VideoGrid title="trending" />
-          <VideoGrid title="Autos & Vehicles" hideDivider={true} />
+          <VideoGrid title="Trending" videos={trendingVideos} />
+          {console.log(trendingVideos)}
         </div>
       </div>
     );
   }
+
+  getTrendingVideos() {
+    return this.props.mostPopularVideos.slice(0, AMOUNT_TRENDING_VIDEOS);
+  }
 }
+
+function mapStateToProps(state) {
+  return {
+    mostPopularVideos: getMostPopularVideos(state)
+  };
+}
+export default connect(
+  mapStateToProps,
+  null
+)(HomeContent);
