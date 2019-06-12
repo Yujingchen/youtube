@@ -13,7 +13,7 @@ class HomeContent extends React.Component {
       <div className="home-content">
         <div className="responsive-video-grid-container">
           <VideoGrid title="Trending" videos={trendingVideos} />
-          {console.log(trendingVideos)}
+          {console.log(this.props)}
         </div>
       </div>
     );

@@ -11,25 +11,6 @@ exports[`renders <AppLayout/> with one child 1`] = `
 </div>
 `;
 
-exports[`renders <AppLayout> 1`] = `
-<div
-  className="app-layout"
->
-  <HeaderNav />
-  <div>
-    Child
-  </div>
-  <div>
-    <span>
-      Child
-    </span>
-    <p>
-      Child
-    </p>
-  </div>
-</div>
-`;
-
 exports[`renders <AppLayout> with two children 1`] = `
 <div
   className="app-layout"
@@ -54,24 +35,5 @@ exports[`renders empty <AppLayout/> 1`] = `
   className="app-layout"
 >
   <HeaderNav />
-</div>
-`;
-
-exports[`renders empty <AppLayout/> 2`] = `
-<div
-  className="app-layout"
->
-  <HeaderNav />
-  <div>
-    Child
-  </div>
-  <div>
-    <span>
-      Child
-    </span>
-    <p>
-      Child
-    </p>
-  </div>
 </div>
 `;
