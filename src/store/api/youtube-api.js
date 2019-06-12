@@ -67,7 +67,8 @@ function createResource(properties) {
 export function buildMostPopularVideosRequest(
   amount = 12,
   loadDescription = false,
-  nextPageToken
+  nextPageToken,
+  videoCategoryId = null
 ) {
   let fields =
     "nextPageToken,prevPageToken,items(contentDetails/duration,id,snippet(channelId,channelTitle,localized/title,publishedAt,thumbnails/medium,title),statistics/viewCount),pageInfo(totalResults)";
@@ -83,7 +84,8 @@ export function buildMostPopularVideosRequest(
       maxResults: amount,
       regionCode: "US",
       pageToken: nextPageToken,
-      fields
+      fields,
+      videoCategoryId
     },
     null
   );
