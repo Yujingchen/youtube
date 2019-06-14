@@ -30,10 +30,9 @@ export const MOST_POPULAR_BY_CATEGORY = createRequestTypes(
   "MOST_POPULAR_BY_CATEGORY"
 );
 export const mostPopularByCategory = {
-  request: () =>
+  request: categories =>
     createAction(MOST_POPULAR_BY_CATEGORY[REQUEST], { categories }),
   success: (response, categories) =>
     createAction(MOST_POPULAR_BY_CATEGORY[SUCCESS], { response, categories }),
-  failure: response =>
-    createAction(MOST_POPULAR_BY_CATEGORY[FAILURE], { response })
+  failure: response => createAction(MOST_POPULAR_BY_CATEGORY[FAILURE], response)
 };

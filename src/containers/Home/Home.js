@@ -1,13 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import * as VideoActions from "../../store/actions/video";
+import * as videoActions from "../../store/actions/video";
 import { bindActionCreators } from "redux";
 import { getYoutubeLibraryLoaded } from "../../store/reducers/api";
 import SideBar from "../../containers/SideBar/SideBar";
 import HomeContent from "./HomeContent/HomeContent";
 import "./Home.scss";
+import { getVideoCategoryIds } from "../../store/reducers/video";
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      categoryIndex: 0
+    };
+  }
   render() {
     return (
       <React.Fragment>
@@ -24,11 +31,26 @@ class Home extends Component {
       this.fetchCategoriesAndMostPopularVideos();
     }
   }
-
   componentDidUpdate(prevProps) {
     if (this.props.youtubeLibraryLoaded !== prevProps.youtubeLibraryLoaded) {
       this.fetchCategoriesAndMostPopularVideos();
+    } else if (this.props.videoCategories !== prevProps.videoCategories) {
+      this.fetchVideosByCategory();
     }
+  }
+
+  fetchVideosByCategory() {
+    const categoryStartIndex = this.state.categoryIndex;
+    const categories = this.props.videoCategories.slice(
+      categoryStartIndex,
+      categoryStartIndex + 3
+    );
+    this.props.fetchMostPopularVideosByCategory(categories);
+    this.setState(prevState => {
+      return {
+        categoryIndex: prevState.categoryIndex + 3
+      };
+    });
   }
 
   fetchCategoriesAndMostPopularVideos() {
@@ -37,15 +59,24 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return { youtubeLibraryLoaded: getYoutubeLibraryLoaded(state) };
-};
+function mapStateToProps(state) {
+  return {
+    youtubeLibraryLoaded: getYoutubeLibraryLoaded(state),
+    videoCategories: getVideoCategoryIds(state)
+  };
+}
 
 function mapDispatchToProps(dispatch) {
-  const fetchMostPopularVideos = VideoActions.mostPopular.request;
-  const fetchVideoCategories = VideoActions.categories.request;
+  const fetchMostPopularVideos = videoActions.mostPopular.request;
+  const fetchVideoCategories = videoActions.categories.request;
+  const fetchMostPopularVideosByCategory =
+    videoActions.mostPopularByCategory.request;
   return bindActionCreators(
-    { fetchMostPopularVideos, fetchVideoCategories },
+    {
+      fetchMostPopularVideos,
+      fetchVideoCategories,
+      fetchMostPopularVideosByCategory
+    },
     dispatch
   );
 }

@@ -1,11 +1,16 @@
-import { MOST_POPULAR, VIDEO_CATEGORIES } from "../actions/video";
+import {
+  MOST_POPULAR,
+  VIDEO_CATEGORIES,
+  MOST_POPULAR_BY_CATEGORY
+} from "../actions/video";
 import { SUCCESS } from "../actions";
 import { createSelector } from "reselect";
 
 const initialState = {
   byId: {},
   mostPopular: {},
-  categories: {}
+  categories: {},
+  mostPopularPerCategories: {}
 };
 
 export default function videos(state = initialState, action) {
@@ -14,6 +19,12 @@ export default function videos(state = initialState, action) {
       return reduceFetchMostPopularVideos(action.response, state);
     case VIDEO_CATEGORIES[SUCCESS]:
       return reduceFetchVideoCategories(action.response, state);
+    case MOST_POPULAR_BY_CATEGORY[SUCCESS]:
+      return reduceFetchMostPopularVideosByCategory(
+        action.response,
+        action.categories,
+        state
+      );
     default:
       return state;
   }
@@ -37,7 +48,6 @@ function reduceFetchMostPopularVideos(response, prevState) {
   if (response.hasOwnProperty("prevPageToken") && prevState.mostPopular) {
     items = [...prevState.mostPopular.item, ...items];
   }
-  // if not means the items object is empty, then append items with totalResult and nextPageToken
   const mostPopular = {
     totalResults: response.pageInfo.totalResults,
     nextPageToken: response.nextPageToken,
@@ -76,5 +86,73 @@ export const getVideoCategoryIds = createSelector(
   state => state.videos.categories,
   categories => {
     return Object.keys(categories || {});
+  }
+);
+
+function reduceFetchMostPopularVideosByCategory(
+  responses,
+  categories,
+  prevState
+) {
+  let videoMap = {};
+  let byCategoryMap = {};
+
+  responses.forEach((response, index) => {
+    // ignore answer if there was an error
+    if (response.status === 400) return;
+
+    const categoryId = categories[index];
+    const { byId, byCategory } = groupVideosByIdAndCategory(response.result);
+    videoMap = { ...videoMap, ...byId };
+    byCategoryMap[categoryId] = byCategory;
+  });
+
+  // compute new state
+  return {
+    ...prevState,
+    byId: { ...prevState.byId, ...videoMap },
+    byCategory: { ...prevState.byCategory, ...byCategoryMap }
+  };
+}
+
+function groupVideosByIdAndCategory(response) {
+  const videos = response.items;
+  const byId = {};
+  const byCategory = {
+    totalResults: response.pageInfo.totalResults,
+    nextPageToken: response.nextPageToken,
+    items: []
+  };
+
+  videos.forEach(video => {
+    byId[video.id] = video;
+
+    const items = byCategory.items;
+    if (items && items) {
+      items.push(video.id);
+    } else {
+      byCategory.items = [video.id];
+    }
+  });
+
+  return { byId, byCategory };
+}
+
+export const getVideosByCategory = createSelector(
+  state => state.videos.byCategory,
+  state => state.videos.byId,
+  state => state.videos.categories,
+  (videosByCategory, videosById, categories) => {
+    return Object.keys(videosByCategory || {}).reduce(
+      (accumulator, categoryId) => {
+        const videoIds = videosByCategory[categoryId].items;
+        const categoryTitle = categories[categoryId];
+        accumulator[categoryTitle] = videoIds.map(
+          videoId => videosById[videoId]
+        );
+        return accumulator;
+      },
+      {}
+    );
   }
 );

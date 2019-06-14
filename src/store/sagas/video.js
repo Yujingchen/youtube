@@ -43,18 +43,18 @@ export function* watchMostPopularVideosByCategory() {
     const { categories } = yield take(
       videoActions.MOST_POPULAR_BY_CATEGORY[REQUEST]
     );
-    yield fork(fetchMostPopularVideosByCategories, categories);
+    yield fork(fetchMostPopularVideosByCategory, categories);
   }
 }
 
-export function* fetchMostPopularVideosByCategories(categories) {
+export function* fetchMostPopularVideosByCategory(categories) {
   const requests = categories.map(category => {
     const wrapper = ignoreErrors(
       api.buildMostPopularVideosRequest,
       12,
       false,
       null,
-      categories
+      category
     );
     return call(wrapper);
   });
