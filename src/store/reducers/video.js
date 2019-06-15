@@ -104,7 +104,9 @@ function reduceFetchMostPopularVideosByCategory(
     const categoryId = categories[index];
     const { byId, byCategory } = groupVideosByIdAndCategory(response.result);
     videoMap = { ...videoMap, ...byId };
+    //map of video same as mostpoupular video map
     byCategoryMap[categoryId] = byCategory;
+    //map if category like 1,2,3,4
   });
 
   // compute new state

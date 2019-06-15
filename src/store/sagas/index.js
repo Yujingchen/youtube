@@ -11,7 +11,8 @@ export default function*() {
     fork(watchMostPopularVideosByCategory)
   ]);
 }
-
+//run watcher saga for listening to certian type of action
+//yield
 /*
 ... rest unchange for now
 */
@@ -23,6 +24,7 @@ export default function*() {
 export function* fetchEntity(request, entity, ...args) {
   try {
     const response = yield call(request);
+    //make api call and save the response
     // we directly return the result object and throw away the headers and the status text here
     // if status and headers are needed, then instead of returning response.result, we have to return just response.
     yield put(entity.success(response.result, ...args));

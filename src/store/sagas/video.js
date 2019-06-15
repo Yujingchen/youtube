@@ -9,11 +9,13 @@ export function* watchMostPopularVideos() {
     const { amount, loadDescription, nextPageToken } = yield take(
       videoActions.MOST_POPULAR[REQUEST]
     );
-    //parse payload from action
+
     yield fork(fetchMostPopularVideos, amount, loadDescription, nextPageToken);
+    //parse payload from action and fork a saga worker that doing the actual job
   }
 }
-
+//watcher saga listening for certian type of action
+//Question: when is the request action is kicked off? and where the parameters of MOST_POPULAR[REQUEST] come from?
 export function* fetchMostPopularVideos(
   amount,
   loadDescription,
@@ -25,7 +27,11 @@ export function* fetchMostPopularVideos(
     loadDescription,
     nextPageToken
   );
+  //use the perameter to build the request
   yield fetchEntity(request, videoActions.mostPopular);
+}
+export function* watchVideoCategories() {
+  yield takeEvery(videoActions.VIDEO_CATEGORIES[REQUEST], fetchVideoCategories);
 }
 
 export const fetchVideoCategories = fetchEntity.bind(
@@ -33,10 +39,7 @@ export const fetchVideoCategories = fetchEntity.bind(
   api.buildVideoCategoriesRequest,
   videoActions.categories
 );
-
-export function* watchVideoCategories() {
-  yield takeEvery(videoActions.VIDEO_CATEGORIES[REQUEST], fetchVideoCategories);
-}
+//use bind will return a new function
 
 export function* watchMostPopularVideosByCategory() {
   while (true) {
@@ -60,6 +63,7 @@ export function* fetchMostPopularVideosByCategory(categories) {
   });
   try {
     const response = yield all(requests);
+    console.log(response);
     yield put(videoActions.mostPopularByCategory.success(response, categories));
   } catch (error) {
     yield put(videoActions.mostPopularByCategory.failure(error));

@@ -9,6 +9,7 @@ import {
 } from "./index";
 
 export const MOST_POPULAR = createRequestTypes("MOST_POPULAR");
+//MOST_POPULAR Type OBJECT
 export const mostPopular = {
   request: (amount, loadDescription, nextPageToken) =>
     createAction(MOST_POPULAR[REQUEST], {
@@ -19,6 +20,7 @@ export const mostPopular = {
   success: response => createAction(MOST_POPULAR[SUCCESS], { response }),
   failure: response => createAction(MOST_POPULAR[FAILURE], { response })
 };
+//mostPopular actions object
 export const VIDEO_CATEGORIES = createRequestTypes("VIDEO_CATEGORIES");
 export const categories = {
   request: () => createAction(VIDEO_CATEGORIES[REQUEST], {}),
@@ -31,6 +33,7 @@ export const MOST_POPULAR_BY_CATEGORY = createRequestTypes(
 );
 export const mostPopularByCategory = {
   request: categories =>
+    //categories is like a colloectio of ids
     createAction(MOST_POPULAR_BY_CATEGORY[REQUEST], { categories }),
   success: (response, categories) =>
     createAction(MOST_POPULAR_BY_CATEGORY[SUCCESS], { response, categories }),
