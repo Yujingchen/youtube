@@ -1,7 +1,7 @@
 import { fork, take, all, put, call } from "redux-saga/effects";
 import * as watchActions from "../actions/watch";
-import { REQUEST } from "../actions";
 import { buildVideoDetailRequest } from "../api/youtube-api";
+import { REQUEST } from "../actions";
 
 export function* watchWatchDetails() {
   while (true) {
@@ -9,7 +9,6 @@ export function* watchWatchDetails() {
     yield fork(fetchWatchDetails, videoId);
   }
 }
-
 export function* fetchWatchDetails(videoId) {
   let requests = [buildVideoDetailRequest.bind(null, videoId)];
 

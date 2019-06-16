@@ -1,8 +1,8 @@
 import { all, call, put, fork } from "redux-saga/effects";
 import {
   watchMostPopularVideos,
-  watchVideoCategories,
-  watchMostPopularVideosByCategory
+  watchMostPopularVideosByCategory,
+  watchVideoCategories
 } from "./video";
 import { watchWatchDetails } from "./watch";
 export default function*() {
