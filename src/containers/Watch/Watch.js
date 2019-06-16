@@ -6,6 +6,10 @@ import VideoMetadata from "../../components/VideoMetadata/VideoMetadata";
 import VideoInfoBox from "../../components/VideoInfoBox/VideoInfoBox";
 import Comments from "../Comments/Comments";
 export default class Watch extends React.Component {
+  getVideoId() {
+    const searchParams = new URLSearchParams(this.props.location.search);
+    return searchParams.get("v");
+  }
   render() {
     return (
       <div className="watch-grid">

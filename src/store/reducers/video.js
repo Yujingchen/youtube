@@ -10,7 +10,7 @@ const initialState = {
   byId: {},
   mostPopular: {},
   categories: {},
-  mostPopularPerCategories: {}
+  byCategory: {}
 };
 
 export default function videos(state = initialState, action) {
@@ -65,6 +65,7 @@ function reduceFetchVideoCategories(response, prevState) {
     accumulator[category.id] = category.snippet.title;
     return accumulator;
   }, {});
+  // console.log(response);
   return {
     ...prevState,
     categories: categoryMapping
@@ -85,6 +86,7 @@ export const getMostPopularVideos = createSelector(
 export const getVideoCategoryIds = createSelector(
   state => state.videos.categories,
   categories => {
+    // console.log(Object.keys(categories || {}));
     return Object.keys(categories || {});
   }
 );
@@ -156,5 +158,19 @@ export const getVideosByCategory = createSelector(
       },
       {}
     );
+  }
+);
+
+export const videoCategoriesLoaded = createSelector(
+  state => state.videos.categories,
+  categories => {
+    return Object.keys(categories || {}).length !== 0;
+  }
+);
+
+export const videosByCategoryLoaded = createSelector(
+  state => state.videos.byCategory,
+  videosByCategory => {
+    return Object.keys(videosByCategory || {}).length !== 0;
   }
 );

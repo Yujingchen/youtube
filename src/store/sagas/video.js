@@ -51,6 +51,7 @@ export function* watchMostPopularVideosByCategory() {
 }
 
 export function* fetchMostPopularVideosByCategory(categories) {
+  // console.log(categories);
   const requests = categories.map(category => {
     const wrapper = ignoreErrors(
       api.buildMostPopularVideosRequest,
@@ -63,7 +64,6 @@ export function* fetchMostPopularVideosByCategory(categories) {
   });
   try {
     const response = yield all(requests);
-    console.log(response);
     yield put(videoActions.mostPopularByCategory.success(response, categories));
   } catch (error) {
     yield put(videoActions.mostPopularByCategory.failure(error));
