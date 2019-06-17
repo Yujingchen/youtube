@@ -6,7 +6,10 @@ import {
 import { WATCH_DETAILS } from "../actions/watch";
 import { SUCCESS } from "../actions";
 import { createSelector } from "reselect";
-import { VIDEO_LIST_RESPONSE } from "../api/youtube-response-types";
+import {
+  VIDEO_LIST_RESPONSE,
+  SEARCH_LIST_RESPONSE
+} from "../api/youtube-response-types";
 const initialState = {
   byId: {},
   mostPopular: {},
@@ -38,16 +41,8 @@ function reduceFetchMostPopularVideos(response, prevState) {
     accumulator[video.id] = video;
     return accumulator;
   }, {});
-  //create an video map object that maps all the video with their id
-  // "byId": {
-  //     "FLqvTE1Eqfg": {
-  //      "kind": "youtube#video",
-  //      "etag": "\"XI7nbFXulYBIpL0ayR_gDh3eu1k/rzYqHJdz-a40clbPa3V5RJul7XU\"",
-  //      "...": "..."
-  //   }
+
   let items = Object.keys(videoMap);
-  //get the keys from object, like "FLqvTE1Eqfg" which will return a object, use ...items to expand it to the exist items
-  //check if items is already filled with data, if yes only append the new items into the object
   if (response.hasOwnProperty("prevPageToken") && prevState.mostPopular) {
     items = [...prevState.mostPopular.item, ...items];
   }
@@ -63,17 +58,6 @@ function reduceFetchMostPopularVideos(response, prevState) {
     byId: { ...prevState.byId, ...videoMap }
   };
 }
-function reduceFetchVideoCategories(response, prevState) {
-  const categoryMapping = response.items.reduce((accumulator, category) => {
-    accumulator[category.id] = category.snippet.title;
-    return accumulator;
-  }, {});
-  // console.log(response);
-  return {
-    ...prevState,
-    categories: categoryMapping
-  };
-}
 
 export const getMostPopularVideos = createSelector(
   state => state.videos.byId,
@@ -85,12 +69,20 @@ export const getMostPopularVideos = createSelector(
     return mostPopular.items.map(videoId => videosById[videoId]);
   }
 );
-
-export const getVideoCategoryIds = createSelector(
+function reduceFetchVideoCategories(response, prevState) {
+  const categoryMapping = response.items.reduce((accumulator, category) => {
+    accumulator[category.id] = category.snippet.title;
+    return accumulator;
+  }, {});
+  return {
+    ...prevState,
+    categories: categoryMapping
+  };
+}
+export const videoCategoriesLoaded = createSelector(
   state => state.videos.categories,
   categories => {
-    // console.log(Object.keys(categories || {}));
-    return Object.keys(categories || {});
+    return Object.keys(categories || {}).length !== 0;
   }
 );
 
@@ -145,21 +137,6 @@ function groupVideosByIdAndCategory(response) {
   return { byId, byCategory };
 }
 
-function reduceWatchDetails(responses, prevState) {
-  const videoDetailResponse = responses.find(
-    r => r.result.kind === VIDEO_LIST_RESPONSE
-  );
-  const video = videoDetailResponse.result.items[0];
-
-  return {
-    ...prevState,
-    byId: {
-      ...prevState.byId,
-      [video.id]: video
-    }
-  };
-}
-
 export const getVideosByCategory = createSelector(
   state => state.videos.byCategory,
   state => state.videos.byId,
@@ -178,11 +155,10 @@ export const getVideosByCategory = createSelector(
     );
   }
 );
-
-export const videoCategoriesLoaded = createSelector(
+export const getVideoCategoryIds = createSelector(
   state => state.videos.categories,
   categories => {
-    return Object.keys(categories || {}).length !== 0;
+    return Object.keys(categories || {});
   }
 );
 
@@ -192,3 +168,39 @@ export const videosByCategoryLoaded = createSelector(
     return Object.keys(videosByCategory || {}).length !== 0;
   }
 );
+
+function reduceWatchDetails(responses, prevState) {
+  const videoDetailResponse = responses.find(
+    response => response.result.kind === VIDEO_LIST_RESPONSE
+  );
+  const video = videoDetailResponse.result.items[0];
+  const byIdEntry = { [video.id]: video };
+  const relatedEntry = { [video.id]: reduceRelatedVideoRequest(responses) };
+  return {
+    ...prevState,
+    byId: {
+      ...prevState.byId,
+      ...byIdEntry
+    },
+    related: {
+      ...prevState.related,
+      ...relatedEntry
+    }
+  };
+}
+
+function reduceRelatedVideoRequest(responses) {
+  const relatedVideoReponse = responses.find(
+    response => response.result.kind === SEARCH_LIST_RESPONSE
+  );
+  const { pageInfo, items, nextPageToken } = relatedVideoReponse.result;
+  const relatedVideoIds = items.map(video => {
+    return video.id;
+  });
+
+  return {
+    totalResults: pageInfo.totalResults,
+    nextPageToken,
+    items: relatedVideoIds
+  };
+}

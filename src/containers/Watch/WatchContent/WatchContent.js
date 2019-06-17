@@ -1,20 +1,36 @@
-import React, { Component } from "react";
+import React from "react";
 import Video from "../../../components/Video/Video";
 import RelatedVideos from "../../../components/RelatedVideos/RelatedVideos";
 import VideoMetadata from "../../../components/VideoMetadata/VideoMetadata";
 import VideoInfoBox from "../../../components/VideoInfoBox/VideoInfoBox";
 import Comments from "../../Comments/Comments";
 import "./WatchContent.scss";
-export default class WatchContent extends Component {
+import { connect } from "react-redux";
+export class WatchContent extends React.Component {
   render() {
+    if (!this.props.videoId) {
+      return <div />;
+    }
     return (
       <div className="watch-grid">
         <Video className="video" id={this.props.videoId} />
-        <VideoMetadata className="metadata" viewCount={1000} />
-        <VideoInfoBox className="video-info-box" />
-        <Comments className="comments" amountComments={1124999} />
+        <VideoMetadata video={this.props.video} />
+        <VideoInfoBox video={this.props.video} />
+        <Comments amountComments={112499} />
         <RelatedVideos className="relatedVideos" />
       </div>
     );
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  const { videoId } = ownProps;
+  return {
+    video: state.videos.byId[videoId]
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(WatchContent);

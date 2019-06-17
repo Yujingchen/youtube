@@ -51,7 +51,6 @@ export function* watchMostPopularVideosByCategory() {
 }
 
 export function* fetchMostPopularVideosByCategory(categories) {
-  // console.log(categories);
   const requests = categories.map(category => {
     const wrapper = ignoreErrors(
       api.buildMostPopularVideosRequest,
