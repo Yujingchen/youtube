@@ -10,6 +10,8 @@ import {
   VIDEO_LIST_RESPONSE,
   SEARCH_LIST_RESPONSE
 } from "../api/youtube-response-types";
+import { getSearchParam } from "../../services/url/index";
+
 const initialState = {
   byId: {},
   mostPopular: {},
@@ -239,7 +241,9 @@ export const getRelatedVideos = createSelector(
       // console.log(relatedVideoIds);
       // filter kicks out null values we might have
       console.log(
-        relatedVideoIds.map(videoId => videos[videoId.videoId]).filter(video => video)
+        relatedVideoIds
+          .map(videoId => videos[videoId.videoId])
+          .filter(video => video)
       );
       //videoId return a object which contains the actuall id in videoId field
       return relatedVideoIds
@@ -249,3 +253,12 @@ export const getRelatedVideos = createSelector(
     return [];
   }
 );
+
+export const getChannelId = (state, location, name) => {
+  const videoId = getSearchParam(location, name);
+  const video = state.videos.byId(videoId);
+  if (video) {
+    return video.snippet.channelId;
+  }
+  return null;
+};

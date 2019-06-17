@@ -5,7 +5,8 @@ import * as watchAction from "../../store/actions/watch";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getYoutubeLibraryLoaded } from "../../store/reducers/api";
-
+import { getSearchParam } from "../../services/url";
+import { getChannelId } from "../../store/reducers/video";
 class Watch extends React.Component {
   componentDidMount() {
     if (this.props.youtubeLibraryLoaded) {
@@ -24,22 +25,23 @@ class Watch extends React.Component {
     if (!videoId) {
       this.props.history.push("/");
     }
-    this.props.fetchWatchDetails(videoId);
+    this.props.fetchWatchDetails(videoId, this.props.channelId);
   }
 
   getVideoId() {
-    const searchParams = new URLSearchParams(this.props.location.search);
-    return searchParams.get("v");
+    return getSearchParam(this.props.location, "v");
   }
 
   render() {
     const videoId = this.getVideoId();
-    return <WatchContent videoId={videoId} />;
+    return <WatchContent videoId={videoId} channelId={this.props.channelId} />;
   }
 }
-function mapStateToProps(state) {
+
+function mapStateToProps(state, props) {
   return {
-    youtubeLibraryLoaded: getYoutubeLibraryLoaded(state)
+    youtubeLibraryLoaded: getYoutubeLibraryLoaded(state),
+    channelId: getChannelId(state, props.location, "v")
   };
 }
 
@@ -47,6 +49,7 @@ function mapDispatchToProps(dispatch) {
   const fetchWatchDetails = watchAction.details.request;
   return bindActionCreators({ fetchWatchDetails }, dispatch);
 }
+
 export default withRouter(
   connect(
     mapStateToProps,
