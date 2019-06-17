@@ -3,7 +3,7 @@ import {
   VIDEO_CATEGORIES,
   MOST_POPULAR_BY_CATEGORY
 } from "../actions/video";
-import { WATCH_DETAILS } from "../actions/watch";
+import { WATCH_DETAILS, VIDEO_DETAILS } from "../actions/watch";
 import { SUCCESS } from "../actions";
 import { createSelector } from "reselect";
 import {
@@ -14,7 +14,8 @@ const initialState = {
   byId: {},
   mostPopular: {},
   categories: {},
-  byCategory: {}
+  byCategory: {},
+  related: {}
 };
 
 export default function videos(state = initialState, action) {
@@ -31,6 +32,8 @@ export default function videos(state = initialState, action) {
       );
     case WATCH_DETAILS[SUCCESS]:
       return reduceWatchDetails(action.response, state);
+    case VIDEO_DETAILS[SUCCESS]:
+      return reduceVideoDetails(action.response, state);
     default:
       return state;
   }
@@ -204,3 +207,45 @@ function reduceRelatedVideoRequest(responses) {
     items: relatedVideoIds
   };
 }
+
+function reduceVideoDetails(responses, prevState) {
+  const videoResponses = responses.filter(
+    response => response.result.kind === VIDEO_LIST_RESPONSE
+  );
+  const parsedVideos = videoResponses.reduce((videoMap, response) => {
+    const video = response.result.items ? response.result.items[0] : null;
+    if (!video) {
+      return videoMap;
+    }
+    videoMap[video.id] = video;
+    return videoMap;
+  }, {});
+  return {
+    ...prevState,
+    byId: { ...prevState.byId, ...parsedVideos }
+  };
+}
+
+const getRelatedVideoIds = (state, videoId) => {
+  const related = state.videos.related[videoId];
+  return related ? related.items : [];
+};
+export const getRelatedVideos = createSelector(
+  getRelatedVideoIds,
+  state => state.videos.byId,
+
+  (relatedVideoIds, videos) => {
+    if (relatedVideoIds) {
+      // console.log(relatedVideoIds);
+      // filter kicks out null values we might have
+      console.log(
+        relatedVideoIds.map(videoId => videos[videoId.videoId]).filter(video => video)
+      );
+      //videoId return a object which contains the actuall id in videoId field
+      return relatedVideoIds
+        .map(videoId => videos[videoId.videoId])
+        .filter(video => video);
+    }
+    return [];
+  }
+);

@@ -6,6 +6,7 @@ import VideoInfoBox from "../../../components/VideoInfoBox/VideoInfoBox";
 import Comments from "../../Comments/Comments";
 import "./WatchContent.scss";
 import { connect } from "react-redux";
+import { getRelatedVideos } from "../../../store/reducers/video";
 export class WatchContent extends React.Component {
   render() {
     if (!this.props.videoId) {
@@ -17,7 +18,11 @@ export class WatchContent extends React.Component {
         <VideoMetadata video={this.props.video} />
         <VideoInfoBox video={this.props.video} />
         <Comments amountComments={112499} />
-        <RelatedVideos className="relatedVideos" />
+        <RelatedVideos
+          className="relatedVideos"
+          videos={this.props.relatedVideos}
+        />
+        {/* {console.log(this.props.relatedVideos)} */}
       </div>
     );
   }
@@ -26,6 +31,7 @@ export class WatchContent extends React.Component {
 function mapStateToProps(state, ownProps) {
   const { videoId } = ownProps;
   return {
+    relatedVideos: getRelatedVideos(state, videoId),
     video: state.videos.byId[videoId]
   };
 }

@@ -3,6 +3,7 @@ import "./NextUpVideo.scss";
 import { Checkbox, Divider } from "semantic-ui-react";
 import VideoPreview from "../../VideoPreview/VideoPreview";
 export default function NextUpVideo(props) {
+  const NextUpVideo = props.video;
   return (
     <React.Fragment>
       <div className="next-up-container">
@@ -12,7 +13,13 @@ export default function NextUpVideo(props) {
           <Checkbox toggle defaultChecked />
         </div>
       </div>
-      <VideoPreview horizontal={true} />
+      <VideoPreview
+        video={NextUpVideo}
+        key={NextUpVideo.id}
+        pathname="watch"
+        search={`?v=${NextUpVideo.id}`}
+        horizontal={true}
+      />
       <Divider />
     </React.Fragment>
   );

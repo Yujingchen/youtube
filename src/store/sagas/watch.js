@@ -5,6 +5,7 @@ import {
   buildRelatedVideosRequest
 } from "../api/youtube-api";
 import { REQUEST } from "../actions";
+import { SEARCH_LIST_RESPONSE } from "../api/youtube-response-types";
 
 export function* watchWatchDetails() {
   while (true) {
@@ -22,7 +23,28 @@ export function* fetchWatchDetails(videoId) {
   try {
     const responses = yield all(requests.map(fn => call(fn)));
     yield put(watchActions.details.success(responses));
+    yield call(fetchVideoDetails, responses); //fix WATCH_DETAIL FAILURE
+    //consecutive action
   } catch (error) {
     yield put(watchActions.details.failure(error));
   }
 }
+
+function* fetchVideoDetails(responses) {
+  const searchListResponses = responses.find(
+    response => response.result.kind === SEARCH_LIST_RESPONSE
+  );
+  const relatedVideoIds = searchListResponses.result.items.map(
+    relatedVideo => relatedVideo.id.videoId
+  );
+  const requests = relatedVideoIds.map(relatedVideoId => {
+    return buildVideoDetailRequest.bind(null, relatedVideoId);
+  });
+  try {
+    const responses = yield all(requests.map(fn => call(fn)));
+    yield put(watchActions.videoDetails.success(responses));
+  } catch (error) {
+    yield put(watchActions.videoDetails.failure(error));
+  }
+}
+//consecutive requests for related videos
