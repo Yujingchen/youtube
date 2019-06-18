@@ -6,7 +6,8 @@ import Watch from "./containers/Watch/Watch";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { youtubeLibraryLoaded } from "./store/actions/api";
-
+import Trending from "./containers/Trending/Trending";
+import Search from "./containers/Search/Search";
 const API_KEY = "AIzaSyDGa1Jr04g_jf5WuPHcWW4jYWS-pQ2RjF0";
 
 class App extends Component {
@@ -14,6 +15,12 @@ class App extends Component {
     return (
       <AppLayout>
         <Switch>
+          <Route path="/feed/trending" component={Trending}>
+            <Route
+              path="/result"
+              render={() => <Search key={this.props.location.key} />}
+            />
+          </Route>
           <Route
             path="/watch"
             render={() => <Watch key={this.props.location.key} />}

@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import "./Trending.scss";
-import { VideoPreview } from "../../components/VideoPreview/VideoPreview";
-import { SideBar } from "../SideBar/SideBar";
 import * as videoActions from "../../store/actions/video";
 import {
   getMostPopularVideos,
@@ -11,7 +9,7 @@ import {
 import { getYoutubeLibraryLoaded } from "../../store/reducers/api";
 import { bindActionCreators } from "redux";
 import { connect } from "http2";
-import { InfiniteScroll } from "../../components/InfiniteScroll/InfiniteScroll";
+import { VideoList } from "../../components/VideoList/VideoList";
 class Trending extends Component {
   componentDidMount() {
     this.fetchTrendingVideos();
@@ -30,37 +28,20 @@ class Trending extends Component {
 
   render() {
     const loaderActive = this.shouldShowLoader();
-    const previews = this.getVideoPreviews();
+
     return (
-      <React.forwardRef>
-        <SideBar />
-        <div className="trending">
-          <InfiniteScroll
-            bottomReachedCallback={this.fetchMoreVideos}
-            showLoader={loaderActive}
-          >
-            {previews}
-          </InfiniteScroll>
-        </div>
-      </React.forwardRef>
+      <VideoList
+        bottomReachedCallBack={this.fetchMoreVideos}
+        showLoader={loaderActive}
+        videos={this.props.videos}
+      />
     );
   }
 
   shouldShowLoader() {
     return !this.props.allMostPopularVideosLoaded;
   }
-  getVideoPreviews() {
-    return this.props.videos.map(video => (
-      <VideoPreview
-        horizontal={true}
-        expanded={true}
-        video={video}
-        key={video.id}
-        pathname={"/watch"}
-        search={`?v=` + video.id}
-      />
-    ));
-  }
+
   fetchMoreVideos = () => {
     const { nextPageToken } = this.props;
     if (this.props.youtubeLibraryLoaded && nextPageToken) {

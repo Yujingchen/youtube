@@ -1,7 +1,8 @@
 .watch-grid {
   display: grid;
-  grid-template: auto auto auto 1fr / auto 402px;
+  grid-template: auto auto auto 1fr / minmax(0, 1280px) 402px;
   //create a grid container with 3 rows and 2 columns. element with 1fr hight, will take all the available whitespace
+  justify-content: center;
   padding-top: 24px;
   column-gap: 24px;
   grid-row-gap: 8px;
@@ -27,5 +28,12 @@
     grid-column: 2/3;
     grid-row: 1 / span 4;
     // element with span will span over the span all the available rows. 4 will span over four grid rows
+  }
+}
+
+@media (max-width: 1754px) {
+  .wtach-grid {
+    padding-left: 24px;
+    padding-right: 24px;
   }
 }
