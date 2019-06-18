@@ -47,9 +47,10 @@ class VideoInfoBox extends Component {
   }
 
   render() {
-    if (!this.props.video) {
+    if (!this.props.video || !this.props.channel) {
       return <div />;
     }
+    const { channel } = this.props;
     const descriptionParagraphs = this.getDescriptionParagraphs();
     const { descriptionTextClass, buttonTitle } = this.getConfig();
     const publishedAtString = getPublishedAtDateString(
@@ -60,11 +61,11 @@ class VideoInfoBox extends Component {
         <div className="video-info-box">
           <Image
             className="channel-image"
-            src="http://via.placeholder.com/48x48"
+            src={channel.snippet.thumbnails.medium.url}
             circular
           />
           <div className="video-info">
-            <div className="channel-name"> Channel Name</div>
+            <div className="channel-name">{channel.snippet.title}</div>
             <div className="video-publication-date">{publishedAtString}</div>
           </div>
 

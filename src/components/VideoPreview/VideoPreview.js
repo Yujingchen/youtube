@@ -4,6 +4,7 @@ import "./VideoPreview.scss";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import { getShortNumberString } from "../../services/number/number-format";
+import { getVideoDurationString } from "../../services/date/date-format";
 import { Link } from "react-router-dom";
 TimeAgo.locale(en);
 const timeAgo = new TimeAgo("fi-FI");
@@ -21,7 +22,9 @@ export default class VideoPreview extends React.Component {
           <div className="image-container">
             <Image src={video.snippet.thumbnails.medium.url} />
             <div className="time-label">
-              <span>{video.contentDetails.duration}</span>
+              <span>
+                {getVideoDurationString(video.contentDetails.duration)}
+              </span>
             </div>
           </div>
 

@@ -13,13 +13,14 @@ export default function NextUpVideo(props) {
           <Checkbox toggle defaultChecked />
         </div>
       </div>
+
       <VideoPreview
         video={NextUpVideo}
-        key={NextUpVideo.id}
         pathname="watch"
-        search={`?v=${NextUpVideo.id}`}
+        search={`?v=${props.video.id}`}
         horizontal={true}
       />
+
       <Divider />
     </React.Fragment>
   );
