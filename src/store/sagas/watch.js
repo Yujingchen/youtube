@@ -3,8 +3,9 @@ import * as watchActions from "../actions/watch";
 import {
   buildVideoDetailRequest,
   buildRelatedVideosRequest,
-  buildChannelRequest
-} from "../api/youtube-api";
+  buildChannelRequest,
+  buildCommentThreadRequest
+} from '../api/youtube-api';
 import { REQUEST } from "../actions";
 import {
   SEARCH_LIST_RESPONSE,
@@ -21,7 +22,8 @@ export function* watchWatchDetails() {
 export function* fetchWatchDetails(videoId, channelId) {
   let requests = [
     buildVideoDetailRequest.bind(null, videoId),
-    buildRelatedVideosRequest.bind(null, videoId)
+    buildRelatedVideosRequest.bind(null, videoId),
+    buildCommentThreadRequest.bind(null, videoId)
   ];
 
   if (channelId) {
@@ -30,7 +32,7 @@ export function* fetchWatchDetails(videoId, channelId) {
 
   try {
     const responses = yield all(requests.map(fn => call(fn)));
-    yield put(watchActions.details.success(responses));
+    yield put(watchActions.details.success(responses, videoId));
     yield call(fetchVideoDetails, responses, channelId == null); //fix WATCH_DETAIL FAILURE
     //consecutive action
   } catch (error) {

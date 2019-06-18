@@ -10,8 +10,8 @@ export default class SideBar extends Component {
     return (
       //Use samantic Menu to build vertical and fixed left sidebar
       <Menu borderless vertical stackable fixed="left" className="side-nav">
-        <SideBarItem highlight={true} label="Home" icon="home" />
-        <SideBarItem highlight={false} label="Trending" icon="fire" />
+        <SideBarItem path='/'  label="Home" icon="home" />
+        <SideBarItem path ='/feed/trending' highlight={false} label="Trending" icon="fire" />
         <SideBarItem highlight={false} label="Followers" icon="spy" />
         <Divider />
         <SideBarHeader title="Library" />

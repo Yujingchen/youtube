@@ -6,12 +6,11 @@ import {
   SUCCESS
 } from "./index";
 
-export const WATCH_DETAILS = createRequestTypes("WATCH_DETAILS");
+export const WATCH_DETAILS = createRequestTypes('WATCH_DETAILS');
 export const details = {
-  request: (videoId, channelId) =>
-    createAction(WATCH_DETAILS[REQUEST], { videoId, channelId }),
-  success: response => createAction(WATCH_DETAILS[SUCCESS], { response }),
-  failure: response => createAction(WATCH_DETAILS[FAILURE], { response })
+  request: (videoId, channelId) => createAction(WATCH_DETAILS[REQUEST], {videoId, channelId}),
+  success: (response, videoId) => createAction(WATCH_DETAILS[SUCCESS], {response, videoId}),
+  failure: (response) => createAction(WATCH_DETAILS[FAILURE], {response}),
 };
 
 export const VIDEO_DETAILS = createRequestTypes("VIDEO_DETAILS");

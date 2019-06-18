@@ -257,3 +257,17 @@ export const getChannelId = (state, location, name) => {
   }
   return null;
 };
+
+export const getVideoById = (state, videoId) => {
+  return state.videos.byId[videoId];
+};
+
+export const getAmountComments = createSelector(
+  getVideoById,
+  video => {
+    if (video) {
+      return video.statistics.commentCount;
+    }
+    return 0;
+  }
+);
