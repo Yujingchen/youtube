@@ -5,13 +5,15 @@ import {
   watchVideoCategories
 } from "./video";
 import { watchWatchDetails } from "./watch";
+import { watchSearchForVideos } from "./search";
 
 export default function*() {
   yield all([
     fork(watchMostPopularVideos),
     fork(watchVideoCategories),
     fork(watchMostPopularVideosByCategory),
-    fork(watchWatchDetails)
+    fork(watchWatchDetails),
+    fork(watchSearchForVideos)
   ]);
 }
 //run watcher saga for listening to certian type of action
