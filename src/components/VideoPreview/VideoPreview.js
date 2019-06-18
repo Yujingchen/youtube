@@ -11,6 +11,8 @@ const timeAgo = new TimeAgo("fi-FI");
 export default class VideoPreview extends React.Component {
   render() {
     const { video } = this.props;
+    const expanded = this.props.expanded ? "expanded" : null;
+    const description = this.props.expanded ? video.snippet.description : null;
     if (!video) {
       return <div />;
     }
@@ -18,7 +20,7 @@ export default class VideoPreview extends React.Component {
     const horizontal = this.props.horizontal ? "horizontal" : null;
     return (
       <Link to={{ pathname: this.props.pathname, search: this.props.search }}>
-        <div className={["video-preview", horizontal].join(" ")}>
+        <div className={["video-preview", horizontal, expanded].join(" ")}>
           <div className="image-container">
             <Image src={video.snippet.thumbnails.medium.url} />
             <div className="time-label">
@@ -27,16 +29,16 @@ export default class VideoPreview extends React.Component {
               </span>
             </div>
           </div>
-
           <div className="video-info">
-            <div className="semi-bold show-max-two-lines">
+            <div
+              className={["semi-bold", "show-max-two-lines", expanded].join("")}
+            >
               {video.snippet.title}
             </div>
             <div className="video-preview-metadata-container">
               <div className="channel-title">{video.snippet.channelTitle}</div>
-              <div>
-                <span>{viewAndTimeString}</span>
-              </div>
+              <div className="view-and-time">{viewAndTimeString}</div>
+              <div className="show-max-two-lines">{description}</div>
             </div>
           </div>
         </div>
