@@ -7,6 +7,7 @@ import {
   SUCCESS,
   FAILURE
 } from "./index";
+import { createSelector } from "reselect";
 
 export const MOST_POPULAR = createRequestTypes("MOST_POPULAR");
 //MOST_POPULAR Type OBJECT
@@ -39,3 +40,19 @@ export const mostPopularByCategory = {
     createAction(MOST_POPULAR_BY_CATEGORY[SUCCESS], { response, categories }),
   failure: response => createAction(MOST_POPULAR_BY_CATEGORY[FAILURE], response)
 };
+
+const getMostPopular = state => state.videos.mostPopular;
+export const getMostPopularVideosNextPageToken = createSelector(
+  getMostPopular,
+  mostPopular => {
+    return mostPopular.nextPageToken;
+  }
+);
+
+export const allMostPopularVideosLoaded = createSelector(
+  getMostPopular,
+  mostPopular => {
+    const amountFetchItems = mostPopular.items ? mostPopular.items.length : 0;
+    return amountFetchItems === mostPopular.totalResults;
+  }
+);

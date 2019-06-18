@@ -5,6 +5,7 @@ import {
   watchVideoCategories
 } from "./video";
 import { watchWatchDetails } from "./watch";
+
 export default function*() {
   yield all([
     fork(watchMostPopularVideos),

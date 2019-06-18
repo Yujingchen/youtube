@@ -146,11 +146,29 @@ export function buildChannelRequest(channelId) {
 }
 
 export function buildCommentThreadRequest(videoId, nextPageToken) {
-  return buildApiRequest('GET',
-    '/youtube/v3/commentThreads',
+  return buildApiRequest(
+    "GET",
+    "/youtube/v3/commentThreads",
     {
-      part: 'id,snippet',
+      part: "id,snippet",
       pageToken: nextPageToken,
-      videoId,
-    }, null);
+      videoId
+    },
+    null
+  );
+}
+
+export function buildSearchRequest(query, nextPageToken, amount = 12) {
+  return buildApiRequest(
+    "GET",
+    "/youtube/v3/search",
+    {
+      part: "id,snippet",
+      q: query,
+      type: "video",
+      pageToken: nextPageToken,
+      maxResults: amount
+    },
+    null
+  );
 }
