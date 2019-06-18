@@ -133,10 +133,10 @@ export function buildRelatedVideosRequest(videoId, amountRelatedVideos = 12) {
 
 export function buildChannelRequest(channelId) {
   return buildApiRequest(
-    "Get",
+    "GET",
     "/youtube/v3/channels",
     {
-      part: "snippet, statistics",
+      part: "snippet,statistics",
       id: channelId,
       fields:
         "kind,items(id,snippet(description,thumbnails/medium,title),statistics/subscriberCount)"

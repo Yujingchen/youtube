@@ -238,13 +238,7 @@ export const getRelatedVideos = createSelector(
 
   (relatedVideoIds, videos) => {
     if (relatedVideoIds) {
-      // console.log(relatedVideoIds);
       // filter kicks out null values we might have
-      console.log(
-        relatedVideoIds
-          .map(videoId => videos[videoId.videoId])
-          .filter(video => video)
-      );
       //videoId return a object which contains the actuall id in videoId field
       return relatedVideoIds
         .map(videoId => videos[videoId.videoId])
@@ -254,9 +248,10 @@ export const getRelatedVideos = createSelector(
   }
 );
 
+//selector for getting channelId from byId
 export const getChannelId = (state, location, name) => {
   const videoId = getSearchParam(location, name);
-  const video = state.videos.byId(videoId);
+  const video = state.videos.byId[videoId];
   if (video) {
     return video.snippet.channelId;
   }
