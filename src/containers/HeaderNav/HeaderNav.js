@@ -11,7 +11,7 @@ class HeaderNav extends Component {
   }
 
   onInputChange = event => {
-    this.ListeningStateChangedEvent({
+    this.setState({
       query: event.target.value
     });
   };

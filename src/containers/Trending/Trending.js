@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import "./Trending.scss";
 import * as videoActions from "../../store/actions/video";
 import {
   getMostPopularVideos,
   getMostPopularVideosNextPageToken,
   allMostPopularVideosLoaded
-} from "../../store/reducers/videos";
+} from "../../store/reducers/video";
 import { getYoutubeLibraryLoaded } from "../../store/reducers/api";
 import { bindActionCreators } from "redux";
-import { connect } from "http2";
+import { connect } from "react-redux";
 import { VideoList } from "../../components/VideoList/VideoList";
 class Trending extends Component {
   componentDidMount() {
@@ -16,10 +15,11 @@ class Trending extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.youtubeLibraryLoaded !== this.props.getYoutubeLibraryLoaded) {
+    if (prevProps.youtubeLibraryLoaded !== this.props.youtubeLibraryLoaded) {
       this.fetchTrendingVideos();
     }
   }
+
   fetchTrendingVideos() {
     if (this.props.youtubeLibraryLoaded) {
       this.props.fetchMostPopularVideos(20, true);
@@ -30,11 +30,13 @@ class Trending extends Component {
     const loaderActive = this.shouldShowLoader();
 
     return (
-      <VideoList
-        bottomReachedCallBack={this.fetchMoreVideos}
-        showLoader={loaderActive}
-        videos={this.props.videos}
-      />
+      <div>
+        <VideoList
+          bottomReachedCallback={this.fetchMoreVideos}
+          showLoader={loaderActive}
+          videos={this.props.videos}
+        />
+      </div>
     );
   }
 
@@ -44,12 +46,14 @@ class Trending extends Component {
 
   fetchMoreVideos = () => {
     const { nextPageToken } = this.props;
+    console.log(nextPageToken);
     if (this.props.youtubeLibraryLoaded && nextPageToken) {
-      this.props.fetchMostPopularVideos(12, true, nextPageToken);
+      this.props.fetchMostPopularVideos(50, true, nextPageToken);
     }
   };
 }
 
+//get state from redux store with selectors
 function mapStateToProps(state) {
   return {
     videos: getMostPopularVideos(state),
@@ -59,11 +63,13 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToTops(dispatch) {
+//actions and dispatch
+function mapDispatchToProps(dispatch) {
   const fetchMostPopularVideos = videoActions.mostPopular.request;
   return bindActionCreators({ fetchMostPopularVideos }, dispatch);
 }
+
 export default connect(
   mapStateToProps,
-  mapDispatchToTops
+  mapDispatchToProps
 )(Trending);

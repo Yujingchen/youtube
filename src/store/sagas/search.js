@@ -2,7 +2,7 @@ import * as searchActions from "../actions/search";
 import * as api from "../api/youtube-api";
 import { REQUEST } from "../actions";
 import { fork, take } from "redux-saga/effects";
-import { fetchEntiry } from "./index";
+import fetchEntiry from "./index";
 export function* watchSearchForVideos() {
   while (true) {
     const { searchQuery, amount, nextPageToken } = yield take(
@@ -12,7 +12,7 @@ export function* watchSearchForVideos() {
   }
 }
 
-export function* searchFroVideos(searchQuery, nextPageToken, amount) {
+export function* searchForVideos(searchQuery, nextPageToken, amount) {
   const request = api.buildSearchRequest.bind(
     null,
     searchQuery,

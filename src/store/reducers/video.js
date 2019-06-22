@@ -49,8 +49,9 @@ function reduceFetchMostPopularVideos(response, prevState) {
 
   let items = Object.keys(videoMap);
   if (response.hasOwnProperty("prevPageToken") && prevState.mostPopular) {
-    items = [...prevState.mostPopular.item, ...items];
+    items = [...prevState.mostPopular.items, ...items];
   }
+  //fixed bugs can't fetch more most popular video(Failure)
   const mostPopular = {
     totalResults: response.pageInfo.totalResults,
     nextPageToken: response.nextPageToken,
@@ -269,5 +270,22 @@ export const getAmountComments = createSelector(
       return video.statistics.commentCount;
     }
     return 0;
+  }
+);
+
+const getMostPopular = state => state.videos.mostPopular;
+
+export const getMostPopularVideosNextPageToken = createSelector(
+  getMostPopular,
+  mostPopular => {
+    return mostPopular.nextPageToken;
+  }
+);
+
+export const allMostPopularVideosLoaded = createSelector(
+  getMostPopular,
+  mostPopular => {
+    const amountFetchItems = mostPopular.items ? mostPopular.items.length : 0;
+    return amountFetchItems === mostPopular.totalResults;
   }
 );
