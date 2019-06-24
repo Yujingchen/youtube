@@ -10,6 +10,8 @@ import {
 import { bindActionCreators } from "redux";
 import { getSearchParam } from "../../services/url";
 import { VideoList } from "../../components/VideoList/VideoList";
+import { withRouter } from "react-router-dom";
+
 class Search extends Component {
   componentDidMount() {
     if (!this.getSearchQuery()) {
@@ -45,11 +47,13 @@ class Search extends Component {
   searchForVideos() {
     const searchQuery = this.getSearchQuery();
     if (this.props.youtubeApiLoaded) {
-      this.props.searchForvideos(searchQuery);
+      this.props.searchForVideos(searchQuery);
     }
+    console.log(this.props.searchForVideos);
   }
 
   getSearchQuery() {
+    console.log(this.props);
     return getSearchParam(this.props.location, "search_query");
   }
 }
@@ -67,7 +71,9 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ searchForVideos }, dispatch);
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Search);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Search)
+);

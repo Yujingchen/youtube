@@ -17,7 +17,7 @@ class HeaderNav extends Component {
   };
   onSubmit = () => {
     const escapedSearchQuery = encodeURI(this.state.query);
-    this.props.history.push(`/search?search_query=${escapedSearchQuery}`);
+    this.props.history.push(`/result?search_query=${escapedSearchQuery}`);
   };
 
   render() {
@@ -31,7 +31,7 @@ class HeaderNav extends Component {
         <Menu.Menu className="nav-container">
           {/* searchbar with semaintic Input element */}
           <Menu.Item className="search-input">
-            <Form>
+            <Form onSubmit={this.onSubmit}>
               <Form.Field>
                 <Input
                   placeholder="Search"

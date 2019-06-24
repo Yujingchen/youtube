@@ -25,11 +25,11 @@ export default function Rating(props) {
   return (
     <div className="rating">
       <div className="thumbs-up">
-        <Icon name="thumbs outline up" />
+        <Icon name="thumbs up" />
         <span>{likeCount}</span>
       </div>
       <div className="thumbs-down">
-        <Icon name="thumbs outline down" />
+        <Icon name="thumbs down" />
         <span>{dislikeCount}</span>
       </div>
       {rating}

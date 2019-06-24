@@ -20,7 +20,6 @@ class SideBarItem extends React.Component {
   }
   shouldBeHighlighted() {
     const { pathname } = this.props.location;
-    console.log("pathname=", pathname);
     if (this.props.path === "/") {
       return pathname === this.props.path;
     }

@@ -24,9 +24,9 @@ export default class VideoPreview extends React.Component {
           <div className="image-container">
             <Image src={video.snippet.thumbnails.medium.url} />
             <div className="time-label">
-              <span>
+              {/* <span>
                 {getVideoDurationString(video.contentDetails.duration)}
-              </span>
+              </span> */}
             </div>
           </div>
           <div className="video-info">

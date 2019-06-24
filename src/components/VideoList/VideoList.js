@@ -22,6 +22,7 @@ export class VideoList extends React.Component {
   }
   getVideoPreviews() {
     if (!this.props.videos || !this.props.videos.length) {
+      // console.log(this.props);
       return null;
     }
 

@@ -4,7 +4,7 @@ import { SUCCESS, REQUEST } from "../actions";
 export default function(state = {}, action) {
   switch (action.type) {
     case SEARCH_FOR_VIDEOS[SUCCESS]:
-      return reduceSearchForVideos(action.response, action.searchQuery);
+      return reduceSearchForVideos(action.response, action.searchQuery, state);
     case SEARCH_FOR_VIDEOS[REQUEST]:
       return action.nextPageToken ? state : {};
     default:
@@ -18,14 +18,14 @@ function reduceSearchForVideos(response, searchQuery, prevState) {
     id: item.id.videoId
   }));
   if (prevState.query === searchQuery) {
-    const prevResults = prevState.result || [];
+    const prevResults = prevState.results || [];
     searchResults = prevResults.concat(searchResults);
   }
   return {
-    totalResult: response.pageInfo.totalResult,
+    totalResults: response.pageInfo.totalResults,
     nextPageToken: response.nextPageToken,
     query: searchQuery,
-    result: searchResults
+    results: searchResults
   };
 }
 
