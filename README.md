@@ -17,7 +17,7 @@ You can check out [live preview](http://youtube-yujing.surge.sh/).
 ## Note
 
 DNT is built on top of [Create React App](https://github.com/facebook/create-react-app), which means all features that create-react-app supports are available.
-Live demo is deployed to Heroku(https://heroku.com/)
+Live demo is deployed to Surge(https://surge.sh/)
 
 ## TODO List
 
