@@ -1,10 +1,10 @@
-# [Youtube - Mirror of Youtube built with React, Redux, YoutubeAPI, Reselector, Redux-saga](https://nutrition-app-1.herokuapp.com/)
+# [Youtube - Mirror of Youtube built with React, Redux, Redux-saga](http://youtube-yujing.surge.sh/)
 ![Youtube](public/img/screenshots/Screenshot2.png?raw=true 'Daily Nutrition Tracker')
 
 
 ## Preview
 
-You can check out [live preview](https://nutrition-app-1.herokuapp.com/).
+You can check out [live preview](http://youtube-yujing.surge.sh/).
 
 ## Quick Start
 
